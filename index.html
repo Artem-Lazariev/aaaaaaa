@@ -114,17 +114,17 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Динамічно заповнюється скриптом -->
+        
       </tbody>
     </table>
 
     <h2>Додати нового студента</h2>
     <form id="add-student-form">
-      <label>Ім'я: <input type="text" id="name" required></label>
-      <label>Вік: <input type="number" id="age" required></label>
-      <label>Курс: <input type="text" id="course" required></label>
-      <label>Навички (через кому): <input type="text" id="skills" required></label>
-      <label>Email: <input type="email" id="email" required></label>
+      <label>Ім'я <input type="text" id="name" required></label>
+      <label>Вік <input type="number" id="age" required></label>
+      <label>Курс <input type="text" id="course" required></label>
+      <label>Навички <input type="text" id="skills" required></label>
+      <label>Email <input type="email" id="email" required></label>
       <label class="checkbox-label">
         <input type="checkbox" id="isEnrolled"> Записаний на курс
       </label>
@@ -133,125 +133,7 @@
   </div>
 
   <script>
-    const BASE_URL = 'http://localhost:3000/students';
-
-    async function getStudents() {
-        try {
-            const response = await fetch(BASE_URL);
-            if (!response.ok) throw new Error('Помилка завантаження даних');
-
-            const data = await response.json();
-            const students = Array.isArray(data) ? data : data.students;
-
-            renderStudents(students);
-        } catch (error) {
-            console.error('Помилка:', error);
-            alert('Не вдалося отримати список студентів.');
-        }
-    }
-
-    function renderStudents(students) {
-        const tableBody = document.querySelector('#students-table tbody');
-        tableBody.innerHTML = '';
-
-        students.forEach(student => {
-            const row = document.createElement('tr');
-            const skillsText = Array.isArray(student.skills)
-                ? student.skills.join(', ')
-                : student.skills;
-
-            row.innerHTML = `
-                <td>${student.id}</td>
-                <td>${student.name}</td>
-                <td>${student.age}</td>
-                <td>${student.course}</td>
-                <td>${skillsText}</td>
-                <td>${student.email}</td>
-                <td>${student.isEnrolled ? 'Записаний' : 'Не записаний'}</td>
-                <td>
-                  <div class="action-btns">
-                    <button onclick="updateStudent(${student.id})">Оновити</button>
-                    <button class="delete-btn" onclick="deleteStudent(${student.id})">Видалити</button>
-                  </div>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
-
-    async function addStudent(e) {
-        e.preventDefault();
-
-        const name = document.getElementById('name').value.trim();
-        const age = Number(document.getElementById('age').value);
-        const course = document.getElementById('course').value.trim();
-        const skillsInput = document.getElementById('skills').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const isEnrolled = document.getElementById('isEnrolled').checked;
-
-        const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()) : [];
-
-        const newStudent = { name, age, course, skills, email, isEnrolled };
-
-        try {
-            const response = await fetch(BASE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newStudent)
-            });
-
-            if (!response.ok) throw new Error('Помилка додавання');
-
-            document.getElementById('add-student-form').reset();
-            getStudents();
-        } catch (error) {
-            console.error('Помилка:', error);
-            alert('Не вдалося додати студента.');
-        }
-    }
-
-    async function updateStudent(id) {
-        const newCourse = prompt('Введіть новий курс для студента:');
-        if (!newCourse) return;
-
-        try {
-            const response = await fetch(`${BASE_URL}/${id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ course: newCourse })
-            });
-
-            if (!response.ok) throw new Error('Помилка оновлення');
-
-            getStudents();
-        } catch (error) {
-            console.error('Помилка:', error);
-            alert('Не вдалося оновити дані.');
-        }
-    }
-
-    async function deleteStudent(id) {
-        if (!confirm('Ви дійсно хочете видалити цього студента?')) return;
-
-        try {
-            const response = await fetch(`${BASE_URL}/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (!response.ok) throw new Error('Помилка видалення');
-
-            getStudents();
-        } catch (error) {
-            console.error('Помилка:', error);
-            alert('Не вдалося видалити студента.');
-        }
-    }
-
-    document.getElementById('get-students-btn').addEventListener('click', getStudents);
-    document.getElementById('add-student-form').addEventListener('submit', addStudent);
-
-    // Автоматично завантажуємо список при відкритті сторінки
-    getStudents();
+      
   </script>
 </body>
 </html>
